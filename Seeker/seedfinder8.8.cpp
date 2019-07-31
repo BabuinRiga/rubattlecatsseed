@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <algorithm>
 //I need some global variables for making this work
 using namespace std; //this isn't a variable but it gets the code shorter
 extern int numberRare = 0, numberSuperRare = 0, numberUber = 0, numberLegend = 0, superRareChance = 0, uberRareChance = 0, legendaryRareChance = 0;
