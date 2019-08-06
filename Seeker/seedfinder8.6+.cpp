@@ -3,16 +3,17 @@
 #include <vector>
 //I need some global variables for making this work
 using namespace std; //this isn't a variable but it gets the code shorter
-extern int numberRare = 0, numberSuperRare = 0, numberUber = 0, numberLegend = 0, superRareChance = 0, uberRareChance = 0, legendaryRareChance = 0;
-vector<unsigned int> testGetInt;
-vector<vector<int>> catList = {};
+typedef unsigned int seet_t;
+int numberRare = 0, numberSuperRare = 0, numberUber = 0, numberLegend = 0, superRareChance = 0, uberRareChance = 0, legendaryRareChance = 0;
+vector<seet_t> testGetInt;
+vector<vector<seet_t>> catList = {};
 
-std::pair<unsigned int, unsigned int> seedIter(std::pair<unsigned int, unsigned int> start) {	//.first=seed .second=modulo
-	unsigned int seed = start.first, modulo = start.second;										//that's where the seed evolves
+pair<seet_t, seet_t> seedIter(pair<seet_t, seet_t> start) {	//.first=seed .second=modulo
+	auto seed = start.first, modulo = start.second;										//that's where the seed evolves
 	seed ^= seed << 13;
 	seed ^= seed >> 17;
 	seed ^= seed << 15;
-	std::pair<unsigned int, unsigned int> returnedPair(seed, seed % modulo);
+	pair<seet_t, seet_t> returnedPair(seed, seed % modulo);
 	return returnedPair;
 }
 
@@ -59,12 +60,12 @@ int rem1(int x) { //turns score into rarity
 	}
 }
 
-std::pair<unsigned int, unsigned int> calculateSeedThread(unsigned int begin, unsigned int end) {
-	pair <unsigned int, unsigned int> unit;
+pair<seet_t, seet_t> calculateSeedThread(seet_t begin, seet_t end) {
+	pair <seet_t, seet_t> unit;
 	int rarity;
-	for (unsigned int i = begin; i < end; i++) {
+	for (seet_t i = begin; i < end; i++) {
 		unit.first = i;
-		unsigned int j = 0;
+		seet_t j = 0;
 		auto currentCouple = unit;
 		while (j < catList.size() + 1) {
 			currentCouple.second = 10000;
@@ -83,7 +84,7 @@ std::pair<unsigned int, unsigned int> calculateSeedThread(unsigned int begin, un
 					if (j == 0) break;
 					if ((rarity == catList.at(j - 1).at(0)) && (rarity == 0)) {
 						int oldSlot = currentCouple.second;
-						currentCouple = seedIter(pair<unsigned int, unsigned int>(currentCouple.first, numberRare - 1));
+						currentCouple = seedIter(pair<seet_t, seet_t>(currentCouple.first, numberRare - 1));
 						if (currentCouple.second > oldSlot) currentCouple.second = (currentCouple.second + 1) % numberRare; //TODO implementation for collabs is missing
 						if (currentCouple.second != catList.at(j).at(1)) break;
 					}
@@ -91,13 +92,13 @@ std::pair<unsigned int, unsigned int> calculateSeedThread(unsigned int begin, un
 				}
 			}
 			if (j == catList.size() - 1) {
-			    currentCouple.second = 1;
-				return pair<unsigned int, unsigned int>(i, seedIter(currentCouple).first);
+				currentCouple.second = 1;
+				return pair<seet_t, seet_t>(i, seedIter(currentCouple).first);
 			}
 			j++;
 		}
 	}
-	return pair<unsigned int, unsigned int>(0,0);
+	return pair<seet_t, seet_t>(0,0);
 }
 
 int main(int argc, char** argv)
@@ -112,8 +113,8 @@ int main(int argc, char** argv)
 	uberRareChance = legendaryRareChance - atoi(argv[4]);
 	superRareChance = uberRareChance - atoi(argv[3]);
 	auto numberOfPull = (argc - 9) / 2;
-	for (int i = 0; i < numberOfPull; i++) { //getting the rolls, supports holes
-		vector<int>temp;
+	for (seet_t i = 0; i < numberOfPull; i++) { //getting the rolls, supports holes
+		vector<seet_t>temp;
 		temp.push_back(atoi(argv[10 + 2 * i])-2);	//rarity
 		temp.push_back(atoi(argv[11 + 2 * i]));		//slotcode
 		catList.push_back(temp);
