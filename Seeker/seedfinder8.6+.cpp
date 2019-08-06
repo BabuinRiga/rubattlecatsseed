@@ -91,6 +91,7 @@ std::pair<unsigned int, unsigned int> calculateSeedThread(unsigned int begin, un
 				}
 			}
 			if (j == catList.size() - 1) {
+			    currentCouple.second = 1;
 				return pair<unsigned int, unsigned int>(i, seedIter(currentCouple).first);
 			}
 			j++;
