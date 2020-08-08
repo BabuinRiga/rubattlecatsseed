@@ -38,23 +38,6 @@
   <%= hidden_inputs('theme') %>
   <% end %>
 
-  <% if route.path_info == '/cats' %>
-  <div class="cats">
-    <% each_ball_cat do |rarity, cats| %>
-      <%= header(1, rarity) %>
-      <ol>
-        <% cats.reverse_each do |c| %>
-          <li>
-            <input type="checkbox" onchange="roll(this)"
-              name="t" id="cat-<%= c.id %>" value="<%= c.id %>"
-              <%= checked_cat(c) %>>
-            <label for="cat-<%= c.id %>"><%= link_to_roll(c) %></label>
-          </li>
-        <% end %>
-      </ol>
-    <% end %>
-  </div>
-  <% end %>
 </div>
 <% else %>
 <%= hidden_inputs('lang', 'version', 'name') %>

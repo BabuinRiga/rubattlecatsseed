@@ -3,4 +3,25 @@
     %Q{Show me all cats (<a href="#{uri_to_own_all_cats}">Own all cats!</a>) (<a href="#{uri_to_drop_all_cats}">Drop them all!</a>)})
 %>
 
-<%= erb :form %>
+<div class="form">
+  <form method="get" action="<%= route.path_info %>"
+    enctype="application/x-www-form-urlencoded">
+    <%= partial :language %>
+
+    <div class="cats">
+      <% each_ball_cat do |rarity, cats| %>
+        <%= header(1, rarity) %>
+        <ol>
+          <% cats.reverse_each do |c| %>
+            <li>
+              <input type="checkbox" onchange="roll(this)"
+                name="t" id="cat-<%= c.id %>" value="<%= c.id %>"
+                <%= checked_cat(c) %>>
+              <label for="cat-<%= c.id %>"><%= link_to_roll(c) %></label>
+            </li>
+          <% end %>
+        </ol>
+      <% end %>
+    </div>
+  </form>
+</div>
