@@ -4,3 +4,4 @@
 /extract
 /.env
 /.pem
+*data
