@@ -363,6 +363,10 @@ module BattleCatsRolls
       route.cats_uri(query: {o: ''})
     end
 
+    def partial name, nested_arg=nil
+      erb("partials/_#{name}", nested_arg)
+    end
+
     def erb name, nested_arg=nil, &block
       context =
         if nested_arg
